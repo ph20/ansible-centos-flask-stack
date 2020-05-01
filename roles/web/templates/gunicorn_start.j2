@@ -2,8 +2,8 @@
 
 cd {{ django_base_dir }}
 
-source {{ virtualenv_dir }}/bin/activate
-source {{ virtualenv_dir }}/bin/postactivate
+source {{ app_home }}/bin/activate
+source {{ app_home }}/bin/postactivate
 
 exec gunicorn {{ django_project_module }}.wsgi:application \
     --workers {{ gunicorn_num_workers }} \

@@ -16,5 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.limit = "all"
     ansible.inventory_path = "hosts/dev"
     ansible.host_key_checking = false
+    ansible.verbose  = "vv"
+    ansible.compatibility_mode = "2.0"
   end
 end

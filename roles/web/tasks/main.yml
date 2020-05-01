@@ -1,14 +1,21 @@
 ---
 
-- name: Install postgresql-devel
-  yum: name=postgresql-devel state=present
+- name: setup application user
+  include_tasks: setup_user.yml
   tags:
     - deploy
-  
-- include: setup_user.yml           tags=deploy
-- include: setup_virtualenv.yml     tags=deploy
-- include: setup_app.yml            tags=deploy
-- include: setup_gunicorn.yml       tags=deploy
-- include: setup_celery.yml         tags=deploy
-- include: setup_flower.yml         tags=deploy
-- include: setup_nginx.yml          tags=deploy
+
+- name: setup gunicorn
+  include_tasks: setup_gunicorn.yml
+  tags:
+    - deploy
+
+- name: setup web application
+  include_tasks: setup_app.yml
+  tags:
+    - deploy
+
+- name: setup nginx config for working woth guincore
+  include_tasks: setup_nginx.yml
+  tags:
+    - deploy

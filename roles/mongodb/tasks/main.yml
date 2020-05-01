@@ -1,0 +1,18 @@
+---
+
+- name: add mongodb-org-4.2 repo file
+  copy: src=mongodb-org-4.2.repo dest=/etc/yum.repos.d/mongodb-org-4.2.repo
+  tags: mongodb
+
+- name: install mongodb-org
+  yum: name=mongodb-org state=present
+  tags: mongodb
+
+- name: Update mongod.conf
+  copy: src=mongod.conf dest=/etc/mongod.conf backup=yes
+  notify: reload mongodb
+  tags: mongodb
+
+- name: Ensure service is started and that it always starts on boot
+  service: name=mongod state=started enabled=yes
+  tags: mongodb
