@@ -1,7 +1,7 @@
 ---
 
 - pip:
-    name: flask
+    name: https://github.com/ph20/flask-sample/releases/download/v0.3.a1/flask-sample-0.3a1.tar.gz
     extra_args: --user
     executable: "/home/{{ app_user }}/.local/bin/pip3"
   become: true

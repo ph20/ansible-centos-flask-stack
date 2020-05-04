@@ -3,26 +3,34 @@
 - name: Download https://bootstrap.pypa.io/get-pip.py
   get_url:
     url: https://bootstrap.pypa.io/get-pip.py
-    dest: "/home/{{ app_user }}/get-pip.py"
+    dest: "{{ app_home }}/get-pip.py"
   become: true
   become_user: "{{ app_user }}"
 
 - name: Iinstalling pip under web-app user
   shell:
-    cmd: "python3 /home/{{ app_user }}/get-pip.py --user"
-    creates: "/home/{{ app_user }}/.local/bin/pip3"
+    cmd: "python3 {{ app_home }}/get-pip.py --user"
+    creates: "{{ app_home }}/.local/bin/pip3"
   become: true
   become_user: "{{ app_user }}"
 
-- name: Remove get-pip.py
+- name: Remove get-pip.py1
   file:
-    path: "/home/{{ app_user }}/get-pip.py"
+    path: "{{ app_home }}/get-pip.py"
     state: absent
 
 - pip:
     name: gunicorn
     extra_args: --user
-    executable: "/home/{{ app_user }}/.local/bin/pip3"
+    executable: "{{ app_home }}/.local/bin/pip3"
   become: true
   become_user: "{{ app_user }}"
+
+- name: install {{ app_name }} systemd unit file
+  template: src=gunicorn.service.j2 dest=/etc/systemd/system/{{ app_name }}.service
+- name: install {{ app_name }} socket unit file
+  template: src=gunicorn.socket.j2 dest=/etc/systemd/system/{{ app_name }}.socket
+
+- name: start {{ app_name }} service
+  systemd: state=started name={{ app_name }} daemon_reload=yes
 

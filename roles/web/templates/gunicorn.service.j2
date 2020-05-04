@@ -1,0 +1,27 @@
+[Unit]
+Description={{ app_name }} daemon
+Requires={{ app_name }}.socket
+After=network.target
+
+[Service]
+Type=notify
+# the specific user that our service will run as
+User={{ app_user }}
+Group={{ app_group }}
+# another option for an even more restricted service is
+# DynamicUser=yes
+# see http://0pointer.net/blog/dynamic-users-with-systemd.html
+RuntimeDirectory=run
+WorkingDirectory={{ app_home }}
+ExecStart={{ app_home }}/.local/bin/gunicorn {{ app_wsgi }} \
+    --workers {{ gunicorn_num_workers }} \
+    --bind=unix:{{ gunicorn_sock_file }} \
+    --max-requests {{ gunicorn_max_requests }} \
+    --log-level=debug
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

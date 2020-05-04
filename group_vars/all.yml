@@ -2,16 +2,15 @@
 
 # App settings
 
-app_name:                   "sampleapp"
+app_name:                   "flask-sample"
 app_user:                   "webapp"
 app_group:                  "webapp"
 app_pass:                   "12345"
-
+app_wsgi:                   "flask_sample.wsgi:run"
 # Virtualenv settings
 
 app_home:             "/home/{{ app_user }}"
 
-source_dir:                 "{{ app_home }}/src"
 static_dir:                 "{{ app_home }}/static/" # trailing slash is necessary
 media_dir:                  "{{ app_home }}/media/" # trailing slash is necessary
 logs_dir:                   "{{ app_home }}/logs"
@@ -19,9 +18,9 @@ logs_dir:                   "{{ app_home }}/logs"
 # Database settings
 dbpath:                     "/var/lib/mongo"
 db_host:                    "192.168.33.10"
-db_name:                    "ansible_blog"
-db_user:                    "postgres"
-db_pass:                    "postgres"
+db_name:                    "flask_sample"
+db_user:                    "mongo_user"
+db_pass:                    "mongo_pass"
 
 # Nginx settings
 
@@ -30,8 +29,8 @@ nginx_server_name:          "localhost"
 
 # Gunicorn settings
 
-gunicorn_sock_dir:          "{{ app_home }}/run"
-gunicorn_sock_file:         "{{ gunicorn_sock_dir }}/gunicorn.sock"
+gunicorn_run_dir:           "{{ app_home }}/run"
+gunicorn_sock_file:         "{{ gunicorn_run_dir }}/gunicorn.sock"
 gunicorn_max_requests:      "1"
 gunicorn_num_workers:       "2"
 gunicorn_stdout_logfile:    "{{ logs_dir }}/gunicorn.log"
@@ -41,7 +40,7 @@ gunicorn_stderr_logfile:    "{{ logs_dir }}/gunicorn-error.log"
 
 envvars:
     DEBUG:                  "True"
-    DATABASE_URL:           "postgres://{{ db_user }}:{{ db_pass }}@{{ db_host }}:5432/{{ db_name }}"
+    DATABASE_URL:           "mongodb://{{ db_user }}:{{ db_pass }}@{{ db_host }}:5432/{{ db_name }}"
     STATIC_ROOT:            "{{ static_dir }}"
     MEDIA_ROOT:             "{{ media_dir }}"
     LOGS_DIR:               "{{ logs_dir }}"
