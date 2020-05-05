@@ -6,7 +6,7 @@ app_name:                   "flask-sample"
 app_user:                   "webapp"
 app_group:                  "webapp"
 app_pass:                   "12345"
-app_wsgi:                   "flask_sample.wsgi:run"
+app_wsgi:                   "flask_sample.wsgi:app"
 # Virtualenv settings
 
 app_home:             "/home/{{ app_user }}"
@@ -29,7 +29,7 @@ nginx_server_name:          "localhost"
 
 # Gunicorn settings
 
-gunicorn_run_dir:           "{{ app_home }}/run"
+gunicorn_run_dir:           "/run/gunicorn"
 gunicorn_sock_file:         "{{ gunicorn_run_dir }}/gunicorn.sock"
 gunicorn_max_requests:      "1"
 gunicorn_num_workers:       "2"

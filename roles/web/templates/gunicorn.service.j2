@@ -7,18 +7,22 @@ After=network.target
 Type=notify
 # the specific user that our service will run as
 User={{ app_user }}
-Group={{ app_group }}
+Group=nginx
 # another option for an even more restricted service is
 # DynamicUser=yes
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
-RuntimeDirectory=run
+RuntimeDirectory={{ gunicorn_run_dir }}
+PermissionsStartOnly=True
+#RuntimeDirectoryMode=0775
 WorkingDirectory={{ app_home }}
+#Environment="PATH={{ app_home }}/.local/bin"
 ExecStart={{ app_home }}/.local/bin/gunicorn {{ app_wsgi }} \
     --workers {{ gunicorn_num_workers }} \
     --bind=unix:{{ gunicorn_sock_file }} \
     --max-requests {{ gunicorn_max_requests }} \
     --log-level=debug
 ExecReload=/bin/kill -s HUP $MAINPID
+#ExecStop=/bin/kill -s TERM $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
 PrivateTmp=true
