@@ -1,8 +1,35 @@
 ---
 
 - pip:
-    name: https://github.com/ph20/flask-sample/releases/download/v0.3.a2/flask-sample-0.3a2.tar.gz
+    name: https://github.com/ph20/flask-sample/releases/download/v0.4.a2/flask-sample-0.4a2.tar.gz
     extra_args: --user
     executable: "/home/{{ app_user }}/.local/bin/pip3"
   become: true
   become_user: "{{ app_user }}"
+
+- name: Creates separate directory for static content (medis/static)
+  file:
+    path: "{{ data_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: nginx
+    mode: u=rwX,g=rX,o=rX
+
+- name: Exporting static files for nginx
+  shell:
+    cmd: "python3 -m {{ app_module }} static {{ static_dir }}"
+    creates: "{{ static_dir }}"
+  environment:
+    LC_ALL: 'C.UTF-8'
+    LANG: 'C.UTF-8'
+  become: true
+  become_user: "{{ app_user }}"
+
+- name: Set right for static files recursively
+  file:
+    path: "{{ static_dir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ app_user }}"
+    group: nginx
+    mode: u=rwX,g=rX,o=rX

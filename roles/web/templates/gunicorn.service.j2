@@ -16,6 +16,7 @@ PermissionsStartOnly=True
 #RuntimeDirectoryMode=0775
 WorkingDirectory={{ app_home }}
 #Environment="PATH={{ app_home }}/.local/bin"
+ExecStartPre=/bin/mkdir -p {{ logs_dir }}
 ExecStart={{ app_home }}/.local/bin/gunicorn {{ app_wsgi }} \
     --workers {{ gunicorn_num_workers }} \
     --bind=unix:{{ gunicorn_sock_file }} \

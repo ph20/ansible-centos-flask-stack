@@ -6,13 +6,16 @@ app_name:                   "flask-sample"
 app_user:                   "webapp"
 app_group:                  "webapp"
 app_pass:                   "12345"
-app_wsgi:                   "flask_sample.wsgi:app"
+app_module:                 "flask_sample"
+app_wsgi:                   "flask_sample.wsgi"
+app_hostname:               "flask-sample"
 # Virtualenv settings
 
 app_home:             "/home/{{ app_user }}"
 
-static_dir:                 "{{ app_home }}/static/" # trailing slash is necessary
-media_dir:                  "{{ app_home }}/media/" # trailing slash is necessary
+data_dir:                   "/var/www/{{ app_hostname }}"
+static_dir:                 "{{ data_dir }}/static/" # trailing slash is necessary
+media_dir:                  "{{ data_dir }}/media/" # trailing slash is necessary
 logs_dir:                   "{{ app_home }}/logs"
 
 # Database settings
