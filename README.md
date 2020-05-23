@@ -15,4 +15,5 @@ An Ansible Playbook for quickly getting a Flask Web App up and running on CentOS
 
 # Adding hosts
 
-Playbook copy-pasted from https://github.com/tcosta84/ansible-centos-django-stack
+# Used resources
+Base of playbook copy-pasted from https://github.com/tcosta84/ansible-centos-django-stack
